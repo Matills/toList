@@ -44,9 +44,10 @@ const loginUser = async (req, res) => {
 };
 
 const getProfile = (req, res) => {
+  const { iat, exp, ...userData } = req.user;
   res.json({
     message: "Bienvenido a tu perfil",
-    user: req.user,
+    user: userData,
   });
 };
 
