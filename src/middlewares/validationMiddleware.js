@@ -10,6 +10,8 @@ const validateRequest = (fields) => {
           return body('email').isEmail().withMessage('El correo no es válido');
         case 'password':
           return body('password').isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres');
+        case 'description':
+          return body('description').optional().isLength({ max: 500 }).withMessage('La descripción no puede tener más de 500 caracteres');
         default:
           throw new Error(`Campo no soportado para validación: ${field.name}`);
       }

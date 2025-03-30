@@ -1,20 +1,22 @@
 const axios = require("axios");
 
 const TMDB_BASE_URL = process.env.TMDB_BASE_URL;
-const TMDB_API_KEY = process.env.TMDB_API_KEY;
+const TMDB_ACCESS_TOKEN = process.env.TMDB_ACCESS_TOKEN;
 
 class TMDbService {
   static async searchMoviesAndSeries(query) {
     try {
       const response = await axios.get(`${TMDB_BASE_URL}/search/multi`, {
+        headers: {
+          Authorization: `Bearer ${TMDB_ACCESS_TOKEN}`,
+        },
         params: {
-          api_key: TMDB_API_KEY,
           query,
         },
       });
       return response.data.results;
     } catch (error) {
-      console.error("Error al buscar en TMDb:", error.message);
+      console.error("Error al buscar en TMDb:", error.response?.data || error.message);
       throw new Error("No se pudo obtener información de TMDb.");
     }
   }
@@ -22,13 +24,13 @@ class TMDbService {
   static async getDetails(type, id) {
     try {
       const response = await axios.get(`${TMDB_BASE_URL}/${type}/${id}`, {
-        params: {
-          api_key: TMDB_API_KEY,
+        headers: {
+          Authorization: `Bearer ${TMDB_ACCESS_TOKEN}`,
         },
       });
       return response.data;
     } catch (error) {
-      console.error("Error al obtener detalles de TMDb:", error.message);
+      console.error("Error al obtener detalles de TMDb:", error.response?.data || error.message);
       throw new Error("No se pudo obtener detalles de TMDb.");
     }
   }
