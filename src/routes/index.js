@@ -7,5 +7,6 @@ const router = express.Router();
 
 router.use("/users", userRoutes);
 router.use("/lists", listRoutes);
+router.use("/items", searchRoutes);
 
 module.exports = router;
