@@ -13,7 +13,7 @@ class List {
   }
 
   static async findByUserId(userId) {
-    const query = "SELECT * FROM lists WHERE user_id = $1;";
+    const query = "SELECT * FROM lists WHERE user_id = $1 and status 'active';";
     const { rows } = await pool.query(query, [userId]);
     return rows;
   }
@@ -31,7 +31,12 @@ class List {
   }
 
   static async delete(id) {
-    const query = "DELETE FROM lists WHERE id = $1 RETURNING *;";
+    const query = `
+      UPDATE lists
+      SET status = 'deleted', updated_at = NOW()
+      WHERE id = $1
+      RETURNING *;
+    `;
     const { rows } = await pool.query(query, [id]);
     return rows[0];
   }

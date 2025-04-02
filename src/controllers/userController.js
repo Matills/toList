@@ -43,6 +43,23 @@ const loginUser = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  const { id } = req.params;
+  const { name, email, password } = req.body;
+
+  try {
+    const userExists = await UserService.findUserById(id);
+    if (!userExists) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
+
+    const updatedUser = await UserService.updateUser(id, { name, email, password });
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(500).json({ error: "Error al actualizar el usuario" });
+  }
+};
+
 const getProfile = (req, res) => {
   const { iat, exp, ...userData } = req.user;
   res.json({
@@ -51,4 +68,15 @@ const getProfile = (req, res) => {
   });
 };
 
-module.exports = { createUser, loginUser, getProfile };
+const deleteUser = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await UserService.deleteUser(id);
+    res.status(200).json({ message: "Usuario eliminado correctamente" });
+  } catch (error) {
+    res.status(500).json({ error: "Error al eliminar el usuario" });
+  }
+};
+
+module.exports = { createUser, loginUser, updateUser, getProfile, deleteUser };

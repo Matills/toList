@@ -1,3 +1,4 @@
+const { password } = require("pg/lib/defaults");
 const User = require("../models/User");
 const { hashPassword, comparePasswords } = require("../utils/passwordUtils");
 
@@ -28,6 +29,31 @@ class UserService {
     }
 
     return user;
+  }
+
+  static async updateUser(id, { name, email, password }) {
+    const fieldsToUpdate = {};
+  
+    if (name) fieldsToUpdate.name = name;
+    if (email) fieldsToUpdate.email = email;
+    if (password) fieldsToUpdate.password = await hashPassword(password);
+  
+    const updatedUser = await User.update(id, fieldsToUpdate);
+  
+    return {
+      id: updatedUser.id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+    };
+  }
+
+  static async deleteUser(id) {
+    const deletedUser = await User.delete(id);
+    return {
+      id: deletedUser.id,
+      name: deletedUser.name,
+      email: deletedUser.email
+    };
   }
 }
 
