@@ -31,6 +31,7 @@ CREATE TABLE list_items (
     description TEXT,
     status VARCHAR(20) DEFAULT 'active' CHECK (status IN ('active', 'deleted')),
     added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (list_id) REFERENCES lists(id) ON DELETE CASCADE
 );
 

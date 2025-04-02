@@ -55,6 +55,32 @@ class ListService {
       throw error;
     }
   }
+
+  static async getAllUserLists(userId) {
+    logger.info(`Obteniendo todas las listas para usuario ${userId} (propias y compartidas)`);
+    
+    const ownLists = await List.findByUserId(userId);
+    const sharedLists = await SharedList.findByUserId(userId);
+    
+    const result = {
+      ownLists: ownLists.map(list => ({
+        id: list.id,
+        name: list.name,
+        description: list.description,
+        isOwner: true
+      })),
+      sharedLists: sharedLists.map(list => ({
+        id: list.id,
+        name: list.name,
+        description: list.description,
+        isOwner: false,
+        permission: list.permission
+      }))
+    };
+    
+    logger.debug(`Recuperadas ${result.ownLists.length} listas propias y ${result.sharedLists.length} compartidas`);
+    return result;
+  }
 }
 
 module.exports = ListService;

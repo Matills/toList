@@ -23,6 +23,18 @@ class List {
     return rows;
   }
 
+  static async findById(id) {
+    const query = "SELECT * FROM lists WHERE id = $1 AND status = 'active';";
+    logger.debug(`Buscando lista por ID: ${id}`);
+    const { rows } = await pool.query(query, [id]);
+    if (rows.length === 0) {
+      logger.warn(`No se encontró la lista con ID ${id}`);
+      return null;
+    }
+    logger.debug(`Lista ${id} encontrada`);
+    return rows[0];
+  }
+
   static async update(id, { name, description }) {
     const query = `
       UPDATE lists

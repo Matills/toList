@@ -29,13 +29,18 @@ class TMDbService {
 
   static async getDetails(type, id) {
     try {
-      logger.info(`Obteniendo detalles de TMDB para ${type}/${id}`);
-      const response = await axios.get(`${TMDB_BASE_URL}/${type}/${id}`, {
+      let tmdbType = type;
+      if (type === 'series' || type === 'anime') {
+        tmdbType = 'tv';
+      }
+      
+      logger.info(`Obteniendo detalles de TMDB para ${tmdbType}/${id}`);
+      const response = await axios.get(`${TMDB_BASE_URL}/${tmdbType}/${id}`, {
         headers: {
           Authorization: `Bearer ${TMDB_ACCESS_TOKEN}`,
         },
       });
-      logger.debug(`Detalles de TMDB recuperados para ${type}/${id}`);
+      logger.debug(`Detalles de TMDB recuperados para ${tmdbType}/${id}`);
       return response.data;
     } catch (error) {
       logger.error(`Error al obtener detalles de TMDb para ${type}/${id}: ${error.response?.data?.status_message || error.message}`);
