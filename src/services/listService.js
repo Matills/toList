@@ -24,6 +24,28 @@ class ListService {
     }));
   }
 
+  static async getListById(id) {
+    logger.info(`Obteniendo lista con ID ${id}`);
+    try {
+      const list = await List.findById(id);
+      if (!list) {
+        logger.warn(`Lista con ID ${id} no encontrada`);
+        return null;
+      }
+      
+      logger.debug(`Lista ${id} recuperada exitosamente`);
+      return {
+        id: list.id,
+        userId: list.user_id,
+        name: list.name,
+        description: list.description
+      };
+    } catch (error) {
+      logger.error(`Error al obtener lista ${id}: ${error.message}`);
+      throw error;
+    }
+  }
+
   static async updateList(id, { name, description }) {
     logger.info(`Actualizando lista ${id}`);
     try {

@@ -42,6 +42,7 @@ CREATE TABLE shared_lists (
     permission VARCHAR(50) NOT NULL CHECK (permission IN ('view', 'edit')),
     status VARCHAR(20) DEFAULT 'active' CHECK (status IN ('active', 'deleted')),
     shared_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (list_id) REFERENCES lists(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
