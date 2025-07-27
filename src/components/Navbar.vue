@@ -6,43 +6,46 @@
       </div>
 
       <div class="flex items-center space-x-6">
-        <button class="flex items-center gap-1 bg-success text-text-primary px-3 py-1.5 rounded-lg hover:bg-green-600 transition-colors text-sm h-6">
+        <Button variant="success" size="sm" class="gap-1">
           <Plus class="h-3 w-3" />
           <span class="font-medium leading-none">LOG</span>
           <div class="w-px h-3 bg-text-primary opacity-50"></div>
           <ChevronDown class="h-3 w-3" />
-        </button>
+        </Button>
 
-        <a href="#" class="text-text-secondary hover:text-text-primary transition-colors uppercase text-sm font-medium">
-          Lists
+        <a href="#" class="text-text-secondary hover:text-text-primary transition-colors text-sm font-medium">
+          LISTS
         </a>
 
         <div class="relative">
-          <button 
+          <Button 
+            variant="ghost" 
+            size="sm"
             @click="toggleSearch"
-            class="p-2 text-text-secondary hover:text-text-primary transition-colors"
             v-if="!isSearchExpanded"
           >
             <Search class="h-5 w-5" />
-          </button>
+          </Button>
 
           <div 
             v-if="isSearchExpanded"
             class="flex items-center space-x-2"
           >
-            <input
-              ref="searchInput"
-              type="text"
-              placeholder="Search series, movies..."
-              class="w-64 pl-3 pr-10 py-2 bg-background-secondary border border-border rounded-lg text-text-primary placeholder-text-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            <Input
               v-model="searchQuery"
+              type="search"
+              placeholder="Search series, movies..."
+              size="md"
+              class="w-64"
+              ref="searchInputRef"
             />
-            <button 
+            <Button 
+              variant="ghost" 
+              size="sm"
               @click="closeSearch"
-              class="p-1 text-text-secondary hover:text-text-primary transition-colors"
             >
               <X class="h-4 w-4" />
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -51,17 +54,15 @@
         <div class="flex items-center space-x-2">
           <div v-if="!isLoggedIn">
             <a href="#" class="text-text-secondary hover:text-text-primary transition-colors">
-              Sign in
+              SIGN IN
             </a>
-            <button class="bg-primary text-text-primary px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors ml-2">
-              Sign up
-            </button>
+            <Button variant="primary" size="md" class="ml-2">
+              SIGN UP
+            </Button>
           </div>
           <div v-else>
             <div class="flex items-center space-x-2">
-              <div class="w-8 h-8 bg-background-secondary rounded-full flex items-center justify-center">
-                <User class="h-4 w-4 text-text-secondary" />
-              </div>
+              <Avatar size="md" />
               <span class="text-text-primary text-sm">{{ username }}</span>
               <ChevronDown class="h-4 w-4 text-text-secondary" />
             </div>
@@ -74,19 +75,20 @@
 
 <script setup lang="ts">
 import { ref, nextTick } from 'vue'
-import { Search, Plus, User, X, ChevronDown } from 'lucide-vue-next'
+import { Search, Plus, X, ChevronDown } from 'lucide-vue-next'
+import { Button, Input, Avatar } from './base'
 
 const isLoggedIn = ref(false)
-const username = ref('example11')
+const username = ref('')
 
 const isSearchExpanded = ref(false)
 const searchQuery = ref('')
-const searchInput = ref<HTMLInputElement>()
+const searchInputRef = ref<InstanceType<typeof Input>>()
 
 const toggleSearch = () => {
   isSearchExpanded.value = true
   nextTick(() => {
-    searchInput.value?.focus()
+    searchInputRef.value?.focus()
   })
 }
 

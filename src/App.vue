@@ -36,5 +36,6 @@ body {
 #app {
   min-height: 100vh;
   background-color: #121212;
+  font-size: 14px;
 }
 </style>

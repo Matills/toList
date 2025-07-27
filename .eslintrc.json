@@ -4,6 +4,16 @@
       "eslint:recommended",
       "@vue/typescript/recommended"
     ],
+    "env": {
+      "node": true,
+      "es2020": true
+    },
+    "globals": {
+      "defineProps": "readonly",
+      "defineEmits": "readonly",
+      "defineExpose": "readonly",
+      "withDefaults": "readonly"
+    },
     "rules": {
       "@typescript-eslint/ban-types": [
         "error",
@@ -14,6 +24,15 @@
           "extendDefaults": true
         }
       ],
-      "@typescript-eslint/no-explicit-any": "off"
-    }
+      "@typescript-eslint/no-explicit-any": "off",
+      "vue/multi-word-component-names": "off"
+    },
+    "overrides": [
+      {
+        "files": ["*.config.js", "*.config.ts", "postcss.config.js", "tailwind.config.js"],
+        "env": {
+          "node": true
+        }
+      }
+    ]
 }
