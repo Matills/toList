@@ -53,10 +53,18 @@
 
         <div class="flex items-center space-x-2">
           <div v-if="!isLoggedIn">
-            <a href="#" class="text-text-secondary hover:text-text-primary transition-colors">
+            <button 
+              @click="openAuthModal('signin')"
+              class="text-text-secondary hover:text-text-primary transition-colors"
+            >
               SIGN IN
-            </a>
-            <Button variant="primary" size="md" class="ml-2">
+            </button>
+            <Button 
+              variant="primary" 
+              size="md" 
+              class="ml-2"
+              @click="openAuthModal('signup')"
+            >
               SIGN UP
             </Button>
           </div>
@@ -70,6 +78,11 @@
         </div>
       </div>
     </div>
+    <AuthModal 
+      v-model:isOpen="isAuthModalOpen"
+      :mode="authModalMode"
+      @close="closeAuthModal"
+    />
   </nav>
 </template>
 
@@ -77,6 +90,7 @@
 import { ref, nextTick } from 'vue'
 import { Search, Plus, X, ChevronDown } from 'lucide-vue-next'
 import { Button, Input, Avatar } from './base'
+import AuthModal from './AuthModal.vue'
 
 const isLoggedIn = ref(false)
 const username = ref('')
@@ -84,6 +98,9 @@ const username = ref('')
 const isSearchExpanded = ref(false)
 const searchQuery = ref('')
 const searchInputRef = ref<InstanceType<typeof Input>>()
+
+const isAuthModalOpen = ref(false)
+const authModalMode = ref<'signin' | 'signup'>('signin')
 
 const toggleSearch = () => {
   isSearchExpanded.value = true
@@ -95,5 +112,14 @@ const toggleSearch = () => {
 const closeSearch = () => {
   isSearchExpanded.value = false
   searchQuery.value = ''
+}
+
+const openAuthModal = (mode: 'signin' | 'signup') => {
+  authModalMode.value = mode
+  isAuthModalOpen.value = true
+}
+
+const closeAuthModal = () => {
+  isAuthModalOpen.value = false
 }
 </script> 
